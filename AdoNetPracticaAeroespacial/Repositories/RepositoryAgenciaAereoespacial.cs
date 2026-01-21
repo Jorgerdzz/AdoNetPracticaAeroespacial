@@ -7,6 +7,49 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
+#region STORED PROCEDURES
+//create procedure SP_ALL_NAVES
+//as
+//	select * from NAVECITAS
+//go
+
+//select * from tripulacion
+
+//create procedure SP_DATOS_NAVE
+//(@nombreNave nvarchar(50))
+//as
+//	select * from NAVECITAS where NOMBRE_NAVE = @nombreNave
+//go
+
+//create procedure SP_LOAD_ASTRONAUTAS_NAVE
+//(@nombreNave nvarchar(50))
+//as
+//	declare @naveId int
+//	select @naveId = NAVE_ID from NAVECITAS where NOMBRE_NAVE = @nombreNave
+//	select APELLIDO from TRIPULACION where NAVE_ID = @naveId
+//go
+
+//alter procedure SP_LOAD_ASTRONAUTA_POR_NOMBRE
+//(@nombreAstronauta nvarchar(50))
+//as
+//	select APELLIDO, RANGO, FECHA_INGRESO, SALARIO_ANUAL, BONO_POR_MISION from TRIPULACION where APELLIDO = @nombreAstronauta
+//go
+
+//create procedure SP_INSERTAR_NAVE
+//(@naveId int, @nombreNave nvarchar(50), @modelo nvarchar(50), @capacidadMax int, @estado nvarchar(50))
+//as
+//	insert into NAVECITAS values(@naveId, @nombreNave, @modelo, @capacidadMax, @estado)
+//go
+
+//ALTER procedure SP_UPDATE_ASTRONAUTA
+//(@apellido nvarchar(50), @rango nvarchar(50), @salario int)
+//as
+//	declare @idAstronauta int
+//	select @idAstronauta = ASTRONAUTA_ID from TRIPULACION where APELLIDO = @apellido
+//	update TRIPULACION set RANGO = @rango, SALARIO_ANUAL = @salario where ASTRONAUTA_ID = @idAstronauta
+//go
+#endregion
+
 namespace AdoNetPracticaAeroespacial.Repositories
 {
     public class RepositoryAgenciaAereoespacial
