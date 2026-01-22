@@ -32,7 +32,7 @@ using System.Text;
 //alter procedure SP_LOAD_ASTRONAUTA_POR_NOMBRE
 //(@nombreAstronauta nvarchar(50))
 //as
-//	select APELLIDO, RANGO, FECHA_INGRESO, SALARIO_ANUAL, BONO_POR_MISION from TRIPULACION where APELLIDO = @nombreAstronauta
+//	select APELLIDO, RANGO, FECHA_INGRESO, SALARIO_ANUAL, BONO_POR_MISION, NAVE_ID from TRIPULACION where APELLIDO = @nombreAstronauta
 //go
 
 //create procedure SP_INSERTAR_NAVE
@@ -47,6 +47,15 @@ using System.Text;
 //	declare @idAstronauta int
 //	select @idAstronauta = ASTRONAUTA_ID from TRIPULACION where APELLIDO = @apellido
 //	update TRIPULACION set RANGO = @rango, SALARIO_ANUAL = @salario where ASTRONAUTA_ID = @idAstronauta
+//go
+
+//create procedure SP_PRESUPUESTO_TOTAL_ACUMULADO
+//(@nombreNave nvarchar(50),
+//    @presupuestoTotal int OUT)
+//as
+//	declare @id int
+//	select @id = NAVE_ID from NAVECITAS where NOMBRE_NAVE = @nombreNave
+//	select @presupuestoTotal = SUM(PRESUPUESTO) from MISIONES where NAVE_ID = @id
 //go
 #endregion
 
@@ -145,6 +154,7 @@ namespace AdoNetPracticaAeroespacial.Repositories
                 astronauta.FechaIngreso = this.reader["FECHA_INGRESO"].ToString();
                 astronauta.Salario = int.Parse(this.reader["SALARIO_ANUAL"].ToString());
                 astronauta.Bono= int.Parse(this.reader["BONO_POR_MISION"].ToString());
+                astronauta.NaveId = int.Parse(this.reader["NAVE_ID"].ToString());
             }
             await this.reader.CloseAsync();
             await this.cn.CloseAsync();
@@ -184,6 +194,52 @@ namespace AdoNetPracticaAeroespacial.Repositories
             await this.cn.CloseAsync();
             this.com.Parameters.Clear();
             return registros;
+        }
+
+        public async Task<int> GetPresupuestoTotalNaveAsync(string nombreNave)
+        {
+            string sql = "SP_PRESUPUESTO_TOTAL_ACUMULADO";
+            this.com.Parameters.Clear();
+            this.com.Parameters.AddWithValue("@nombreNave", nombreNave);
+            SqlParameter pamPre = new SqlParameter();
+            pamPre.ParameterName = "@presupuestoTotal";
+            pamPre.Value = 0;
+            pamPre.Direction = System.Data.ParameterDirection.Output;
+            this.com.Parameters.Add(pamPre);
+            this.com.CommandType = System.Data.CommandType.StoredProcedure;
+            this.com.CommandText = sql;
+            await this.cn.OpenAsync();
+            await this.com.ExecuteNonQueryAsync();
+            int presupuestoTotal = int.Parse(pamPre.Value.ToString());
+            await this.cn.CloseAsync();
+            this.com.Parameters.Clear();
+            return presupuestoTotal;
+        }
+
+        public async Task<string> ValidarCapacidadMaxAsync(string apellido, string rango, string fechaIngreso, int salarioAnual, int bono, int naveId)
+        {
+            string sql = "SP_VALIDACION_CAPACIDAD";
+            this.com.Parameters.Clear();
+            this.com.Parameters.AddWithValue("@apellido", apellido);
+            this.com.Parameters.AddWithValue("@rango", rango);
+            this.com.Parameters.AddWithValue("@fechaIngreso", fechaIngreso);
+            this.com.Parameters.AddWithValue("@salarioAnual", salarioAnual);
+            this.com.Parameters.AddWithValue("@bono", bono);
+            this.com.Parameters.AddWithValue("@naveId", naveId);
+            SqlParameter pamMensaje = new SqlParameter();
+            pamMensaje.ParameterName = "@mensaje";
+            pamMensaje.Value = "";
+            pamMensaje.Direction = System.Data.ParameterDirection.Output;
+            this.com.Parameters.Add(pamMensaje);
+            this.com.CommandType = System.Data.CommandType.StoredProcedure;
+            this.com.CommandText = sql;
+            await this.cn.OpenAsync();
+            await this.com.ExecuteNonQueryAsync();
+            string mensaje = pamMensaje.Value.ToString();
+            await this.cn.CloseAsync();
+            this.com.Parameters.Clear();
+            return mensaje;
+
         }
 
     }

@@ -54,6 +54,11 @@
             btnUpdate = new Button();
             label12 = new Label();
             txtNombre = new TextBox();
+            label13 = new Label();
+            txtPresupuesto = new TextBox();
+            label14 = new Label();
+            txtId = new TextBox();
+            btnInsertarAstro = new Button();
             SuspendLayout();
             // 
             // label1
@@ -248,7 +253,7 @@
             // 
             // btnUpdate
             // 
-            btnUpdate.Location = new Point(629, 449);
+            btnUpdate.Location = new Point(797, 190);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new Size(141, 56);
             btnUpdate.TabIndex = 23;
@@ -272,11 +277,58 @@
             txtNombre.Size = new Size(125, 27);
             txtNombre.TabIndex = 25;
             // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.Location = new Point(286, 435);
+            label13.Name = "label13";
+            label13.Size = new Size(202, 20);
+            label13.TabIndex = 26;
+            label13.Text = "Presupuesto total acumulado";
+            // 
+            // txtPresupuesto
+            // 
+            txtPresupuesto.Location = new Point(291, 468);
+            txtPresupuesto.Name = "txtPresupuesto";
+            txtPresupuesto.Size = new Size(197, 27);
+            txtPresupuesto.TabIndex = 27;
+            // 
+            // label14
+            // 
+            label14.AutoSize = true;
+            label14.Location = new Point(615, 435);
+            label14.Name = "label14";
+            label14.Size = new Size(62, 20);
+            label14.TabIndex = 28;
+            label14.Text = "Nave ID";
+            // 
+            // txtId
+            // 
+            txtId.Location = new Point(620, 465);
+            txtId.Name = "txtId";
+            txtId.Size = new Size(158, 27);
+            txtId.TabIndex = 29;
+            // 
+            // btnInsertarAstro
+            // 
+            btnInsertarAstro.Location = new Point(797, 287);
+            btnInsertarAstro.Name = "btnInsertarAstro";
+            btnInsertarAstro.Size = new Size(141, 52);
+            btnInsertarAstro.TabIndex = 30;
+            btnInsertarAstro.Text = "Insertar astronauta";
+            btnInsertarAstro.UseVisualStyleBackColor = true;
+            btnInsertarAstro.Click += btnInsertarAstro_Click;
+            // 
             // FormAgenciaAeroespacial
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(950, 541);
+            Controls.Add(btnInsertarAstro);
+            Controls.Add(txtId);
+            Controls.Add(label14);
+            Controls.Add(txtPresupuesto);
+            Controls.Add(label13);
             Controls.Add(txtNombre);
             Controls.Add(label12);
             Controls.Add(btnUpdate);
@@ -337,5 +389,10 @@
         private Button btnUpdate;
         private Label label12;
         private TextBox txtNombre;
+        private Label label13;
+        private TextBox txtPresupuesto;
+        private Label label14;
+        private TextBox txtId;
+        private Button btnInsertarAstro;
     }
 }

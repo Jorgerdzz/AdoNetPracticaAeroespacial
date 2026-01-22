@@ -61,6 +61,9 @@ namespace AdoNetPracticaAeroespacial
                 this.lstAstronautas.Items.Add(apellido);
             }
 
+            int presupuestoTotal = await this.repo.GetPresupuestoTotalNaveAsync(nombreNave);
+            this.txtPresupuesto.Text = presupuestoTotal.ToString();
+
         }
 
         private async void lstAstronautas_SelectedIndexChanged(object sender, EventArgs e)
@@ -72,6 +75,7 @@ namespace AdoNetPracticaAeroespacial
             this.txtFechaIngreso.Text = astronauta.FechaIngreso.ToString();
             this.txtSalario.Text = astronauta.Salario.ToString();
             this.txtBono.Text = astronauta.Bono.ToString();
+            this.txtId.Text = astronauta.NaveId.ToString();
         }
 
         private async void btnUpdate_Click(object sender, EventArgs e)
@@ -81,6 +85,25 @@ namespace AdoNetPracticaAeroespacial
             int salario = int.Parse(this.txtSalario.Text);
             int registros = await this.repo.UpdateAstronautaAsync(apellido, rango, salario);
             MessageBox.Show("Astronauta modificado: " + registros);
+        }
+
+        private async void btnInsertarAstro_Click(object sender, EventArgs e)
+        {
+            string apellido = this.txtApellido.Text;
+            string rango = this.txtRango.Text;
+            string fechaIngreso = this.txtFechaIngreso.Text;
+            int salario = int.Parse(this.txtSalario.Text);
+            int bono = int.Parse(this.txtBono.Text);
+            int naveId = int.Parse(this.txtId.Text);
+            string mensaje = await this.repo.ValidarCapacidadMaxAsync(apellido, rango, fechaIngreso, salario, bono, naveId);
+            if (mensaje == "I")
+            {
+                MessageBox.Show("Astronauta insertado");
+            }
+            else
+            {
+                MessageBox.Show("Se ha superado la capacidad maxima de la nave");
+            }
         }
     }
 }
