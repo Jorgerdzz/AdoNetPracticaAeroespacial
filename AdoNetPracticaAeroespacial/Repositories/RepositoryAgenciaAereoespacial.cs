@@ -4,6 +4,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Reflection;
 using System.Text;
 
@@ -49,13 +50,27 @@ using System.Text;
 //	update TRIPULACION set RANGO = @rango, SALARIO_ANUAL = @salario where ASTRONAUTA_ID = @idAstronauta
 //go
 
-//create procedure SP_PRESUPUESTO_TOTAL_ACUMULADO
-//(@nombreNave nvarchar(50),
-//    @presupuestoTotal int OUT)
+//alter procedure SP_VALIDACION_CAPACIDAD
+//(@apellido nvarchar(50), @rango nvarchar(50), @fechaIngreso nvarchar(50), @salarioAnual int, @bono int, @naveId int,
+//    @mensaje nvarchar(50) OUT)
 //as
+//	declare @capacidadMax int
+//	declare @numAstronautasNave int
 //	declare @id int
-//	select @id = NAVE_ID from NAVECITAS where NOMBRE_NAVE = @nombreNave
-//	select @presupuestoTotal = SUM(PRESUPUESTO) from MISIONES where NAVE_ID = @id
+//	select @capacidadMax = CAPACIDAD_MAX from NAVECITAS where NAVE_ID = @naveId
+//	select @numAstronautasNave = COUNT(ASTRONAUTA_ID) from TRIPULACION where NAVE_ID = @naveId;
+//if (@numAstronautasNave < @capacidadMax)
+//    begin
+//        select @id = max(ASTRONAUTA_ID) from TRIPULACION;
+//set @id = @id + 1
+//		insert into TRIPULACION
+//		values(@id, @apellido, @rango, @fechaIngreso, @salarioAnual, @bono, @naveId)
+//		SET @mensaje = 'InsertadoCorrectamente'
+//	end
+//	else
+//	begin
+//		SET @mensaje = 'SuperadaCapacidadMax'
+//	end
 //go
 #endregion
 
